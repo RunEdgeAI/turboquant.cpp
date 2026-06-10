@@ -1,0 +1,8 @@
+# Copyright (c) 2026 Edge AI
+# SPDX-License-Identifier: MIT
+
+build --cxxopt=-std=c++23
+build --host_cxxopt=-std=c++23
+
+# Eigen 3.4 uses deprecated C++23 features (float_denorm_style)
+build --cxxopt=-Wno-deprecated-declarations

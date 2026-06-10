@@ -1,0 +1,11 @@
+# Copyright (c) 2026 Edge AI
+# SPDX-License-Identifier: MIT
+
+module(
+    name = "turboquant",
+    version = "0.1.0",
+    compatibility_level = 1,
+)
+
+bazel_dep(name = "eigen", version = "3.4.0.bcr.3")
+bazel_dep(name = "rules_cc", version = "0.2.16")

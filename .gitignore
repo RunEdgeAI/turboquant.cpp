@@ -1,0 +1,9 @@
+bazel-*
+.claude/
+.cache/
+compile_commands.json
+*.o
+*.a
+*.so
+*.dylib
+.DS_Store

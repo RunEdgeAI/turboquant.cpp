@@ -1,0 +1,40 @@
+# Copyright (c) 2026 Edge AI
+# SPDX-License-Identifier: MIT
+
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
+cc_library(
+    name = "turboquant",
+    srcs = [
+        "src/codebook.cpp",
+        "src/qjl.cpp",
+        "src/quantizer_mse.cpp",
+        "src/quantizer_prod.cpp",
+        "src/rotation.cpp",
+    ],
+    hdrs = [
+        "include/turboquant/codebook.h",
+        "include/turboquant/qjl.h",
+        "include/turboquant/quantizer_mse.h",
+        "include/turboquant/quantizer_prod.h",
+        "include/turboquant/rotation.h",
+        "include/turboquant/turboquant.h",
+        "include/turboquant/types.h",
+    ],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+    deps = ["@eigen"],
+)
+
+cc_binary(
+    name = "turboquant_example",
+    srcs = ["examples/basic_usage.cpp"],
+    deps = [":turboquant"],
+)
+
+cc_binary(
+    name = "turboquant_benchmark",
+    srcs = ["benchmarks/benchmark.cpp"],
+    deps = [":turboquant"],
+)

@@ -1,5 +1,7 @@
 # turboquant.cpp
 
+[![CI](https://github.com/RunEdgeAI/turboquant.cpp/actions/workflows/ci.yml/badge.svg)](https://github.com/RunEdgeAI/turboquant.cpp/actions/workflows/ci.yml)
+
 C++ implementation of TurboQuant, a near-optimal online vector quantization algorithm.
 
 Based on [TurboQuant: Online Vector Quantization with Near-optimal Distortion Rate](https://arxiv.org/abs/2504.19874)

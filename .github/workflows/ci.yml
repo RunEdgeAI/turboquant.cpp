@@ -1,0 +1,31 @@
+# Copyright (c) 2026 Edge AI
+# SPDX-License-Identifier: MIT
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Bazel
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/bazel-disk
+          key: bazel-${{ matrix.os }}-${{ hashFiles('MODULE.bazel.lock', '.bazelversion') }}
+          restore-keys: bazel-${{ matrix.os }}-
+
+      - name: Build
+        run: bazel build --disk_cache=~/.cache/bazel-disk //...
+
+      - name: Run example
+        run: bazel run --disk_cache=~/.cache/bazel-disk //:turboquant_example

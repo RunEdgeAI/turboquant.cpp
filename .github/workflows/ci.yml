@@ -15,10 +15,10 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Cache Bazel
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/bazel-disk
           key: bazel-${{ matrix.os }}-${{ hashFiles('MODULE.bazel.lock', '.bazelversion') }}

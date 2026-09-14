@@ -27,5 +27,9 @@ jobs:
       - name: Build
         run: bazel build --disk_cache=~/.cache/bazel-disk //...
 
+      # determinism_test pins output across libstdc++ (Linux) and libc++ (macOS).
+      - name: Test
+        run: bazel test --disk_cache=~/.cache/bazel-disk --test_output=errors //...
+
       - name: Run example
         run: bazel run --disk_cache=~/.cache/bazel-disk //:turboquant_example

@@ -81,6 +81,12 @@ Single-threaded, Apple M4 Max, `bazel run -c opt //:turboquant_benchmark`. Compr
 
 Throughput is dominated by the dense d x d rotation matvec, so it scales as O(d^2) and is nearly independent of bitwidth (see Limitations). Run `bazel run -c opt //:turboquant_benchmark` for the full sweep (d = 256/768/1536, b = 1-4).
 
+## Determinism
+
+A quantizer built from the same `(dim, bitwidth, seed)` produces the same codes on every supported platform. The rotation and QJL projection are drawn with a portable Box-Muller sampler over `std::mt19937`'s integers rather than `std::normal_distribution`, whose algorithm the C++ standard leaves unspecified (libc++ and libstdc++ return different sequences from the same engine). `tests/determinism_test.cpp` pins the output with golden hashes and runs in CI on Linux and macOS.
+
+`turboquant::kAlgorithmVersion` changes whenever that output changes. If you persist codes, record it alongside `(dim, bitwidth, seed)` and refuse codes from another version.
+
 ## Limitations
 
 - Bitwidths 1-4 only (precomputed codebooks). Extending to higher bitwidths requires solving the Lloyd-Max optimization for the Beta distribution at the desired precision.

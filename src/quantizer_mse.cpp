@@ -43,4 +43,12 @@ Vec QuantizerMSE::dequantize(const QuantizedMSE& q) const {
     return q.norm * (Pi_.transpose() * y_hat);
 }
 
+float QuantizerMSE::inner_product_rotated(const Vec& rotated_y,
+                                          const QuantizedMSE& q) const {
+    float dot = 0.0f;
+    for (int j = 0; j < dim_; ++j)
+        dot += rotated_y(j) * codebook_.centroids[q.indices[j]];
+    return q.norm * dot;
+}
+
 }  // namespace turboquant

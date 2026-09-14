@@ -18,6 +18,10 @@ public:
     QuantizedMSE quantize(const Vec& x) const;
     Vec dequantize(const QuantizedMSE& q) const;
 
+    // <y, dequantize(q)> given rotated_y = rotation() * y, in O(dim): the
+    // rotation is orthogonal, so <y, Pi^T y_hat> = <Pi y, y_hat>.
+    float inner_product_rotated(const Vec& rotated_y, const QuantizedMSE& q) const;
+
     int dim() const { return dim_; }
     int bitwidth() const { return codebook_.bitwidth; }
     const ScalarCodebook& codebook() const { return codebook_; }

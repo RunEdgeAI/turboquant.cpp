@@ -42,8 +42,21 @@ Vec QuantizerProd::dequantize(const QuantizedProd& q) const {
 }
 
 float QuantizerProd::estimate_inner_product(const Vec& y, const QuantizedProd& q) const {
-    float ip_mse = y.dot(mse_quantizer_.dequantize(q.mse_part));
-    float ip_qjl = qjl_.estimate_inner_product(y, q.qjl_signs, q.residual_norm);
+    return estimate_inner_product(prepare_query(y), q);
+}
+
+QuantizerProd::PreparedQuery QuantizerProd::prepare_query(const Vec& y) const {
+    return PreparedQuery{
+        .rotated = mse_quantizer_.rotation() * y,
+        .projected = qjl_.project(y),
+    };
+}
+
+float QuantizerProd::estimate_inner_product(const PreparedQuery& p,
+                                            const QuantizedProd& q) const {
+    float ip_mse = mse_quantizer_.inner_product_rotated(p.rotated, q.mse_part);
+    float ip_qjl = qjl_.estimate_inner_product_projected(p.projected, q.qjl_signs,
+                                                         q.residual_norm);
     return ip_mse + ip_qjl;
 }
 

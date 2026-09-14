@@ -16,6 +16,15 @@ public:
     float estimate_inner_product(const Vec& y, std::span<const int8_t> signs,
                                  float residual_norm) const;
 
+    // Query-only half of estimate_inner_product: S * y, O(dim^2). Compute once
+    // per query and reuse it across codes.
+    Vec project(const Vec& y) const;
+
+    // estimate_inner_product given project(y): O(dim) per code.
+    float estimate_inner_product_projected(const Vec& projected_y,
+                                           std::span<const int8_t> signs,
+                                           float residual_norm) const;
+
 private:
     int dim_;
     Mat S_;

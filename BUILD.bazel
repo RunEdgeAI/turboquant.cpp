@@ -3,6 +3,7 @@
 
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
 
 cc_library(
     name = "turboquant",
@@ -37,4 +38,12 @@ cc_binary(
     name = "turboquant_benchmark",
     srcs = ["benchmarks/benchmark.cpp"],
     deps = [":turboquant"],
+)
+
+# Pins exact output for fixed seeds across platforms and standard libraries.
+cc_test(
+    name = "determinism_test",
+    srcs = ["tests/determinism_test.cpp"],
+    deps = [":turboquant"],
+    size = "small",
 )
